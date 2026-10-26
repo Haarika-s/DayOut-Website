@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>DayOut — Group Outing Planner</title>
+<style>
+:root{--purple:#653bf1;--deep:#19143d;--lav:#f2efff;--bg:#f8f9fd;--line:#e8e7f2;--muted:#777996;--green:#078657}*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--deep)}button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:11px;background:var(--purple);color:white;font-weight:750;padding:11px 15px}button:hover{filter:brightness(.95)}button:disabled{opacity:.4;cursor:not-allowed}.outline{background:white;border:1px solid #dcd7fc;color:var(--purple)}.soft{background:var(--lav);color:var(--purple)}.small{padding:7px 10px;font-size:12px}.top{height:72px;display:flex;align-items:center;justify-content:space-between;gap:15px;background:#fff;border-bottom:1px solid var(--line);padding:0 28px}.logo{font-size:27px;font-weight:900;letter-spacing:-1.3px;white-space:nowrap}.logo span{color:var(--purple)}.topnav{display:flex;gap:6px}.topnav button{background:transparent;color:#333050}.topnav button.sel{background:var(--lav);color:var(--purple)}.loc{padding:10px 14px;border-radius:20px;background:var(--lav);color:var(--purple);font-weight:800}.layout{max-width:1600px;margin:18px auto;padding:0 16px;display:grid;grid-template-columns:295px minmax(450px,1fr) 365px;gap:14px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:19px;padding:18px;margin-bottom:13px;box-shadow:0 5px 22px #32207b05}.panel h2{font-size:19px;margin:0 0 12px}.panel h3{font-size:15px;margin:0 0 9px}.muted{color:var(--muted);font-size:12px}.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:5px}input,select{width:100%;padding:10px 11px;border:1px solid #dcdcef;border-radius:10px;background:white;color:var(--deep);min-width:0}input[type=checkbox]{width:auto;accent-color:var(--purple)}.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}.summary{background:linear-gradient(110deg,#f4f0ff,#fbfaff);border-radius:18px;padding:22px;margin-bottom:13px;display:flex;justify-content:space-between;gap:10px;align-items:center}.summary h1{font-size:28px;margin:0 0 4px;letter-spacing:-.9px}.summary p{margin:0;color:#5d577e}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}.chip{background:white;color:#5835d4;border-radius:30px;padding:6px 10px;font-size:11px;font-weight:800;border:1px solid #e5ddff}.person{padding:10px 0;border-bottom:1px solid var(--line)}.person:last-child{border:0}.personhead{display:flex;align-items:center;justify-content:space-between;gap:5px}.avatar{display:inline-flex;width:32px;height:32px;align-items:center;justify-content:center;border-radius:50%;background:linear-gradient(135deg,#d5c9ff,#faf0ff);color:#6041b8;font-weight:900}.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.space{justify-content:space-between}.green{color:var(--green)}.pill{font-size:11px;font-weight:800;border-radius:30px;padding:5px 9px;background:#e6f8ef;color:var(--green)}.purplepill{background:var(--lav);color:var(--purple)}.warning{background:#fff4e6;color:#a15b13}.actions{display:grid;gap:7px}.actions button{text-align:left;background:#f7f5ff;color:var(--purple)}.itinerary{position:relative}.itinerary h2{display:flex;align-items:center;gap:8px}.step{display:grid;grid-template-columns:50px minmax(0,1fr);gap:8px;position:relative;margin:16px 0}.step:before{content:"";position:absolute;top:37px;bottom:-24px;left:17px;border-left:2px solid #c7b8ff}.step:last-child:before{display:none}.number{height:34px;width:34px;display:flex;align-items:center;justify-content:center;background:var(--purple);border-radius:50%;color:white;font-weight:900;position:relative;z-index:1}.stop{border:1px solid var(--line);border-radius:16px;padding:11px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:13px}.stop img{width:150px;height:140px;object-fit:cover;border-radius:12px;background:var(--lav)}.stop h3{font-size:18px;margin:3px 0 4px}.stop p{font-size:12px;color:var(--muted);margin:6px 0}.stop .price{color:var(--purple);font-weight:900;font-size:19px}.stop .head{display:flex;justify-content:space-between;gap:8px}.stopbuttons{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}.alert{padding:12px 13px;border-radius:12px;background:#e8faf0;color:#116c4a;font-size:13px;margin:12px 0}.alert.warn{background:#fff3e2;color:#a35b0d}.voterow{padding:10px 0;border-bottom:1px solid var(--line)}.voterow:last-child{border:0}.voterow img{width:65px;height:65px;border-radius:10px;object-fit:cover;background:var(--lav)}.bar{height:8px;background:#eeeaf9;border-radius:20px;margin:6px 0}.fill{height:100%;background:var(--purple);border-radius:20px}.winner{background:#e9faf0;border:1px solid #d0f3e0;padding:14px;border-radius:14px;color:#087347;margin-top:12px}.tie{background:#fff4e6;border:1px solid #f7dcae;padding:14px;border-radius:14px;color:#8c550e;margin-top:12px}.voteform{display:grid;grid-template-columns:1fr 1fr;gap:8px}.voteform select{font-size:12px}.cost{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.cost>div{background:#f8f6ff;border-radius:12px;padding:12px}.cost strong{display:block;font-size:20px;color:var(--purple)}.option{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border:1px solid var(--line);border-radius:11px;margin:6px 0}.option img{width:50px;height:44px;object-fit:cover;border-radius:8px}.option strong{font-size:12px}.option .muted{font-size:11px}.hide{display:none!important}.detail{font-size:12px;color:var(--muted);margin:8px 0}.note{background:#f4f1ff;color:#6655a0;padding:10px;border-radius:10px;font-size:12px;margin-top:10px}.overlay{position:fixed;inset:0;background:#161128aa;display:none;align-items:center;justify-content:center;z-index:10;padding:15px}.overlay.show{display:flex}.dialog{background:white;border-radius:18px;padding:22px;max-width:580px;width:100%;max-height:90vh;overflow:auto}.dialog h2{margin-top:0}.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}.compare>div{background:#f7f5ff;border-radius:10px;padding:12px}.compare li{margin:6px 0;font-size:12px}.bottom{padding:30px;text-align:center;color:#8c8ba1;font-size:12px}@media(max-width:1200px){.layout{grid-template-columns:280px minmax(0,1fr)}.right{grid-column:2}}@media(max-width:780px){.layout{grid-template-columns:1fr}.right{grid-column:auto}.top{height:auto;padding:12px;flex-wrap:wrap}.topnav{order:3;width:100%;overflow:auto}.topnav button{white-space:nowrap}.stop{grid-template-columns:110px minmax(0,1fr)}.stop img{width:110px;height:120px}.summary h1{font-size:23px}}@media(max-width:450px){.stop{grid-template-columns:1fr}.stop img{width:100%;height:145px}.cost{grid-template-columns:1fr 1fr}.voteform{grid-template-columns:1fr}}
+@media(max-width:700px){
+ #inviteAddNew,#add{min-height:46px;min-width:110px;touch-action:manipulation;white-space:nowrap}
+ #inviteNameNew,#friendName{font-size:16px;min-height:46px;min-width:0}
+ .row:has(#inviteNameNew),.row:has(#friendName){display:flex;flex-wrap:wrap;gap:10px}
+ .row:has(#inviteNameNew) input,.row:has(#friendName) input{flex:1 1 155px}
+}
+</style><script>
+window.dayOutAddFriend=function(event,inputId){
+ if(event){event.preventDefault();event.stopPropagation();}
+ var field=document.getElementById(inputId), name=(field&&field.value||'').trim();
+ var feedback=document.getElementById('friendMobileFeedback');
+ function say(t){if(feedback){feedback.textContent=t;feedback.style.display='block';}}
+ if(!name){say('Please type a friend name first.');if(field)field.focus();return false;}
+ try{
+  var key='dayout-original-design-groupflow-v1';
+  var current=JSON.parse(localStorage.getItem(key)||'null')||{people:[]};
+  if(!Array.isArray(current.people))current.people=[];
+  if(current.people.length>=20){say('Maximum 20 friends.');return false;}
+  if(current.people.some(function(p){return p.name.toLowerCase()===name.toLowerCase();})){say('This friend is already added.');return false;}
+  var id=Math.max.apply(null,[0].concat(current.people.map(function(p){return Number(p.id)||0;})))+1;
+  var friend={id:id,name:name.slice(0,40),budget:60,budgetSubmitted:false,age:22,active:true,interest:'games',preferredArea:''};
+  if(typeof s!=='undefined'&&s&&Array.isArray(s.people)){
+    if(s.people.some(function(p){return p.name.toLowerCase()===name.toLowerCase();})){say('This friend is already added.');return false;}
+    s.people.push(friend);
+    if(typeof persist==='function')persist();
+    if(typeof render==='function')render();
+  }else{
+    current.people.push(friend);localStorage.setItem(key,JSON.stringify(current));
+    var list=document.getElementById('people');
+    if(list){var el=document.createElement('div');el.className='person';el.textContent='✓ '+name+' added';list.appendChild(el);}
+  }
+  document.getElementById('friendName').value='';document.getElementById('inviteNameNew').value='';
+  say('✓ '+name+' added successfully!');
+ }catch(err){say('Could not add friend: '+err.message);}
+ return false;
+};
+</script><style>
+/* DayOut layout update: plan summary first, quick actions after voting */
+body > .summary{max-width:1568px;margin:18px auto 0;}
+@media(max-width:780px){body > .summary{margin:12px 12px 0;flex-wrap:wrap}body > .summary #newPlanTop{width:100%}.layout{margin-top:12px}}
+@media(min-width:781px){body > .summary{margin-left:max(16px,calc((100% - 1568px)/2));margin-right:max(16px,calc((100% - 1568px)/2))}}
+</style></head><body><header class="top"><div class="logo"><span>✦</span> DayOut</div><nav class="topnav"><button class="sel" data-nav="planner">Home</button><button id="createOutingNav">Create Outing</button><button data-nav="explore">Explore</button><button data-nav="saved">My Plans</button></nav></header>
+<div aria-live="polite" id="friendMobileFeedback" role="status" style="display:none;position:sticky;top:0;z-index:9;padding:12px 18px;background:#e8faf0;color:#116c4a;font-weight:700;text-align:center"></div><div class="summary"><div><h1>✨ Your DayOut Plan</h1><p id="summaryText"></p><div class="chips"><span class="chip" id="areaChip"></span><span class="chip" id="vibeChip"></span><span class="chip" id="groupChip"></span><span class="chip" id="budgetChip"></span></div></div><button class="outline" id="newPlanTop">✦ New plan</button></div><main class="layout"><aside class="left"><section class="panel" style="border-color:#dcd3ff;background:#f5f2ff"><strong>✨ Plan together</strong><p class="muted">1. Add friends by name → 2. Save each person’s budget, preferences and available times → 3. Agree on a group time → 4. Generate and vote on an itinerary.</p></section><section class="panel"><h2>🗓️ Plan details</h2><div class="field"><label>Outing name</label><input id="planName"/></div><div class="two"><div class="field"><label>Date</label><input id="date" type="date"/></div><div class="field"><label>Start time</label><input id="time" type="time"/></div></div><div class="field"><label>Neighborhood</label><select id="area"><option>Williamsburg</option><option>East Williamsburg</option><option>Bushwick</option><option>Greenwich Village</option><option>West Village</option><option>East Village</option><option>SoHo</option><option>Chinatown</option><option>Lower East Side</option><option>Financial District</option><option>Tribeca</option><option>Chelsea</option><option>Flatiron District</option><option>Midtown</option><option>Hell’s Kitchen</option><option>Upper East Side</option><option>Upper West Side</option><option>Harlem</option><option>Astoria</option><option>Long Island City</option><option>DUMBO</option><option>Downtown Brooklyn</option><option>Park Slope</option><option>Coney Island</option></select></div><div class="two"><div class="field"><label>Group vibe</label><select id="vibe"><option value="nightlife">Nightlife</option><option value="games">Games</option><option value="culture">Culture</option><option value="outdoors">Outdoors</option><option value="food">Food</option><option value="mixed">Mixed</option></select></div><div class="field"><label>Time of day</label><select id="period"><option value="night">Night</option><option value="day">Day</option></select></div></div><div class="note" id="areaNotice">Nearby neighborhoods can be combined. Venue prices and opening hours are illustrative.</div><div class="row" style="margin-top:12px"><button class="soft small" id="reset">Reset</button></div></section>
+<section class="panel"><h2>✉️ Invite friends</h2><div class="row" style="margin:10px 0"><input aria-label="Friend name" id="inviteNameNew" placeholder="Type a friend’s name" style="min-width:0;flex:1"/><button class="small" id="inviteAddNew" onclick="return window.dayOutAddFriend(event,'inviteNameNew')" type="button">＋ Add friend</button></div><p class="muted">Demo invitations: create a shareable invitation message and mark a friend as invited. This prototype does not send messages or support remote joining.</p><div class="field"><label for="inviteFriend">Friend</label><select id="inviteFriend"></select></div><div class="row"><button class="small" id="inviteCreate">Create invitation</button><button class="soft small" id="inviteCopy">Copy message</button></div><div aria-live="polite" class="note" id="invitePreview">Select a friend and create an invitation.</div></section>
+<section class="panel" id="schedulePanel"><div class="row space"><h2 style="margin:0">📅 Smart Scheduling</h2><span class="pill purplepill" id="scheduleCount">0/5 replied</span></div>
+<p class="muted">Ask each attending friend when they are free. DayOut finds dates and time slots that work for everyone.</p>
+<div class="field"><label for="schedulePerson">Friend responding</label><select id="schedulePerson"></select></div>
+<div class="note" style="margin:8px 0">Select suggested times below, or enter your own date and exact time. Custom slots are shared with the group so friends can choose the same slot.</div>
+<div class="two" style="margin-bottom:8px"><div class="field"><label for="customScheduleDate">Your date</label><input id="customScheduleDate" type="date"/></div><div class="field"><label for="customScheduleTime">Your time</label><input id="customScheduleTime" type="time" value="18:30"/></div></div>
+<button class="soft small" id="addCustomSchedule" type="button">＋ Add my date &amp; time</button>
+<div aria-live="polite" class="muted" id="customScheduleStatus" style="margin:8px 0"></div>
+<div id="scheduleChoices"></div>
+<div class="row" style="margin-top:10px"><button class="small" id="saveAvailability">✓ Save availability</button><button class="soft small" id="clearAvailability">Clear response</button></div>
+<div id="scheduleMatches" style="margin-top:13px"></div>
+<div class="note">Prototype: availability is entered on this device on behalf of each participant. No invitations or live calendar connections.</div>
+</section><section class="panel"><h2>🔒 Private budget entry</h2>
+<p class="muted">Select a friend to submit their budget. The participant list will show only “Submitted,” not the amount. Budgets are stored locally on this device for the demo—not securely collected from separate accounts.</p>
+<div class="field"><label for="budgetFriend">Friend submitting</label><select id="budgetFriend"></select></div>
+<div class="field"><label for="privateInterest">Preferred activity</label><select id="privateInterest"><option value="nightlife">Nightlife</option><option value="games">Games &amp; arcades</option><option value="food">Food &amp; cafés</option><option value="culture">Culture</option><option value="outdoors">Outdoors</option><option value="music">Music</option></select></div><div class="field"><label for="privateArea">Preferred neighborhood</label><select id="privateArea"><option value="">No preference</option><option>Williamsburg</option><option>East Williamsburg</option><option>Bushwick</option><option>Greenwich Village</option><option>West Village</option><option>East Village</option><option>SoHo</option><option>Chinatown</option><option>Lower East Side</option><option>Financial District</option><option>Tribeca</option><option>Chelsea</option><option>Flatiron District</option><option>Midtown</option><option>Hell’s Kitchen</option><option>Upper East Side</option><option>Upper West Side</option><option>Harlem</option><option>Astoria</option><option>Long Island City</option><option>DUMBO</option><option>Downtown Brooklyn</option><option>Park Slope</option><option>Coney Island</option></select></div><div class="field"><label for="privateBudget">Maximum activity budget per person ($)</label><input id="privateBudget" max="500" min="0" placeholder="Enter amount" type="number"/></div>
+<button class="small" id="budgetSubmit">Save budget privately</button>
+<div aria-live="polite" class="note" id="budgetStatus">Budget amounts are hidden from the participant list.</div>
+</section>
+<section class="panel"><div class="row space"><h2 style="margin:0">👥 Participants</h2><span class="pill purplepill" id="count">5 attending</span></div><p class="muted">Add friends to plan for up to 20 people. Cancellation choices reflect who is currently attending.</p><div id="people"></div><div class="row" style="margin-top:12px"><input id="friendName" placeholder="Friend's name" style="flex:1;width:110px"/><button class="small" id="add" onclick="return window.dayOutAddFriend(event,'friendName')" type="button">+ Add</button></div></section><section class="panel" id="generateAfterParticipants" style="border:2px solid #dcd3ff;background:#f8f6ff"><h2>✨ Ready to generate your DayOut?</h2><p class="muted">After adding friends, saving their availability, and collecting their budgets and preferences, generate the group itinerary here.</p><button id="generate" style="width:100%">✦ Generate group plan</button><p class="muted" style="margin-top:9px">The button becomes available when the required participant details are complete.</p></section></aside>
+<section class="center"><div class="panel itinerary" id="plannerView"><div class="row space"><h2>☀️ Final itinerary <span class="pill" id="voteBadge">✓ Group-ready plan</span></h2><div style="text-align:right"><strong id="total" style="font-size:20px"></strong><div class="muted">estimated per person</div></div></div><div aria-live="polite" class="note" id="actionFeedback" role="status">Choose your neighborhood, vibe and budget, then generate an itinerary.</div><div id="status"></div><div id="stops"></div><button class="outline" id="addStop" style="width:100%">＋ Add another stop</button><div class="cost" id="costs"></div></div><div class="panel hide" id="exploreView"><h2>🔎 Explore local venues</h2><p class="muted">Suggestions can include nearby neighborhoods. Availability and hours must be verified with the venue.</p><div id="exploreItems"></div></div><div class="panel hide" id="savedView"><h2>💾 My saved plans</h2><div id="savedItems"></div></div></section>
+<aside class="right"><section class="panel"><h2>📊 Group voting</h2><p class="muted">Each attending friend votes once for their preferred option. DayOut announces the winner and adds it to the itinerary automatically when eligible.</p><div class="voteform"><div class="field"><label>Vote as</label><select id="voter"></select></div><div class="field"><label>Vote on</label><select id="voteSlot"></select></div></div><div id="voteItems"></div><div id="voteResult"></div><div class="row" style="margin-top:12px"><button class="soft small" id="newRound">↻ New voting round</button><button class="small hide" id="applyWinner">✓ Apply winner</button></div></section><section class="panel"><h2>⚡ Quick actions</h2><div class="actions"><button id="regenerate">✦ Generate another plan</button><button id="lowerBudget">💰 Lower a budget to $30</button><button id="cancelTwo">👥 People Cancelled</button><button id="switchPeriod">🌙 Switch day / night</button><button id="save">💾 Save plan</button><button id="undo">↶ Undo</button></div></section><section class="panel"><h2>📍 Nearby neighborhoods</h2><p class="muted" id="locationInfo"></p><div class="note">Venues are examples of real places. Costs are illustrative. Opening hours, age policies, event schedules, and availability are <b>not live-verified</b>; confirm before visiting.</div></section></aside></main>
+<div aria-labelledby="detailsTitle" aria-modal="true" class="overlay" id="detailsModal" role="dialog"><div class="dialog" style="max-width:690px;max-height:88vh;overflow:auto"><div class="row space"><h2 id="detailsTitle">Venue details</h2><button aria-label="Close details" class="soft small" id="detailsClose" type="button">✕</button></div><div id="detailsBody"></div><div aria-live="polite" class="muted" id="detailsActionMessage" style="margin-top:10px"></div><div class="row" style="margin-top:16px"><button class="outline" id="detailsDone" type="button">Close</button></div></div></div><div aria-labelledby="addStopTitle" aria-modal="true" class="overlay" id="addStopModal" role="dialog">
+<div class="dialog"><div class="row space"><h2 id="addStopTitle">➕ Add another stop</h2><button class="soft small" id="addStopClose">✕</button></div>
+<p class="muted">Choose an additional venue in your area or a nearby neighborhood. Only places matching the outing time and age restrictions are shown. You can add a food stop here even if food wasn't included in the original plan.</p>
+<div class="field"><label for="addStopCategory">Type of stop</label><select id="addStopCategory"><option value="all">All types</option><option value="nightlife">Nightlife</option><option value="games">Games</option><option value="music">Live music</option><option value="food">Food and drinks</option><option value="outdoors">Outdoors</option></select></div>
+<div class="note" id="addStopSummary"></div><div id="addStopChoices"></div>
+<div class="row" style="margin-top:15px"><button class="outline" id="addStopDismiss">Cancel</button></div></div></div><div aria-labelledby="cancelTitle" aria-modal="true" class="overlay" id="cancelModal" role="dialog">
+<div class="dialog"><div class="row space"><h2 id="cancelTitle">👥 People Cancelled</h2><button class="soft small" id="cancelClose">✕</button></div>
+<p class="muted">Tell DayOut exactly how many friends cancelled and select their names. Nobody is removed until you confirm.</p>
+<div class="field"><label for="cancelCount">How many people cancelled? (up to 20 attending)</label><select id="cancelCount"></select></div>
+<div class="field"><label>Select the friends who cancelled</label><div id="cancelNames"></div></div>
+<div aria-live="polite" class="note" id="cancelSelectionStatus"></div>
+<div class="row" style="margin-top:16px"><button disabled="" id="confirmCancel">Confirm Cancellation</button><button class="outline" id="cancelDismiss">Go back</button></div>
+</div></div><div class="overlay" id="modal"><div class="dialog"><div class="row space"><h2>🔄 DayOut Rescue</h2><button class="soft small" id="close">✕</button></div><p id="rescueExplanation"></p><div class="compare"><div><strong>Current itinerary</strong><ul id="before"></ul></div><div><strong>Suggested update</strong><ul id="after"></ul></div></div><p class="muted">Only the necessary stops change. Rejecting keeps your original choices.</p><div class="row"><button id="approve">Approve update</button><button class="outline" id="reject">Keep original</button></div></div></div><footer class="bottom">DayOut • Interactive midterm prototype • No live venue-hours or booking integration</footer>
+<div aria-labelledby="newOutingTitle" aria-modal="true" class="overlay" id="newOutingModal" role="dialog">
+<div class="dialog" style="max-width:480px">
+<h2 id="newOutingTitle">✨ Create a new outing</h2>
+<p class="muted">Start a different plan without deleting anything in My Plans. Unsaved changes to the current outing will be replaced.</p>
+<div class="actions" style="margin:16px 0">
+<button id="newKeepFriends" type="button">👥 New outing with the same friends</button>
+<button id="newFreshFriends" type="button">🌱 Start fresh with a new group</button>
+</div>
+<button class="outline" id="newOutingCancel" type="button">Cancel</button>
+</div></div><script>
+const photos={rooftop:'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=700&q=80',club:'https://images.unsplash.com/photo-1571266028243-d220c9f3f157?w=700&q=80',bar:'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?w=700&q=80',arcade:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=700&q=80',pizza:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=700&q=80',coffee:'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=700&q=80',museum:'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=700&q=80',park:'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=700&q=80',music:'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=700&q=80',food:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=80'};
+const venues=[
+['westlight','Westlight','Williamsburg','rooftop',24,'night',21,'nightlife','Rooftop views; venue policy and hours unverified.'],
+['elsewhere','Elsewhere','East Williamsburg','club',25,'night',21,'nightlife','Music and dancing; event admission varies.'],
+['house','House of Yes','Bushwick','club',25,'night',21,'nightlife','Performance and nightlife; check event details.'],
+['babys','Baby’s All Right','Williamsburg','music',18,'night',21,'nightlife','Live music venue; check event schedule.'],
+['union','Union Pool','Williamsburg','bar',14,'night',21,'nightlife','Neighborhood bar; check admission and hours.'],
+['brooklynbowl','Brooklyn Bowl','Williamsburg','arcade',25,'night',21,'games','Bowling and music; age rules vary by event.'],
+['barcade','Barcade Williamsburg','Williamsburg','arcade',17,'night',21,'games','Arcade games and drinks; age restrictions apply.'],
+['nightofjoy','Night of Joy','Williamsburg','bar',17,'night',21,'nightlife','Cocktail bar; hours unverified.'],
+['ldustrie','L’Industrie Pizzeria','Williamsburg','pizza',14,'both',0,'food','Pizza stop; verify late-night service.'],
+['devocion','Devoción Williamsburg','Williamsburg','coffee',9,'day',0,'food','Coffee stop; daytime only in this demo.'],
+['mccarren','McCarren Park','Williamsburg','park',0,'day',0,'outdoors','Park walk; outdoor access varies.'],
+['wburgwalk','Williamsburg waterfront walk','Williamsburg','park',0,'both',0,'outdoors','Free scenic walk; use caution after dark.'],
+['villagepizza','Joe’s Pizza','Greenwich Village','pizza',12,'both',0,'food','Pizza; verify hours.'],
+['villagepark','Washington Square Park','Greenwich Village','park',0,'both',0,'outdoors','Park and photo walk.'],
+['villagecoffee','Café Reggio','Greenwich Village','coffee',10,'both',0,'food','Coffee and desserts; verify hours.'],
+['eastarcade','Barcade East Village','East Village','arcade',17,'night',21,'games','Arcade and drinks; verify hours.'],
+['eastmusic','DROM','East Village','music',25,'night',21,'nightlife','Music events; check schedule.'],
+['eastfood','Veselka','East Village','food',22,'both',0,'food','Food stop; verify hours.'],
+['sohogallery','SoHo gallery walk','SoHo','museum',0,'day',0,'culture','Browse galleries; hours vary.'],
+['sohocafe','La Colombe SoHo','SoHo','coffee',9,'day',0,'food','Coffee; verify opening hours.'],
+['sohowalk','SoHo architecture walk','SoHo','park',0,'both',0,'outdoors','Self-guided walk.'],
+['chinadinner','Nom Wah Tea Parlor','Chinatown','food',24,'day',0,'food','Food stop; verify hours.'],
+['chinatownwalk','Chinatown street walk','Chinatown','park',0,'both',0,'outdoors','Self-guided walk.'],
+['elsewhere2','Elsewhere','East Williamsburg','music',25,'night',21,'nightlife','Music venue; verify event times and age restrictions.'],
+['bushwickcollective','Bushwick Collective murals','Bushwick','museum',0,'day',0,'culture','Self-guided street-art walk.'],
+['house2','House of Yes','Bushwick','club',25,'night',21,'nightlife','Nightlife events; verify age and tickets.'],
+['waverly','Waverly Inn','West Village','food',35,'night',0,'food','Restaurant; sample price only.'],
+['whitehorse','White Horse Tavern','West Village','bar',18,'night',21,'nightlife','Historic bar; verify opening hours.'],
+['hudsonpark','Hudson River Park – Pier 45','West Village','park',0,'day',0,'outdoors','Waterfront walk.'],
+['mercury','Mercury Lounge','Lower East Side','music',25,'night',21,'nightlife','Live music; ticket and age policies vary.'],
+['tenement','Tenement Museum','Lower East Side','museum',30,'day',0,'culture','Museum visit; reservations may be required.'],
+['katz','Katz’s Delicatessen','Lower East Side','food',25,'both',0,'food','Restaurant; verify hours.'],
+['battery','The Battery','Financial District','park',0,'day',0,'outdoors','Waterfront park.'],
+['fraunces','Fraunces Tavern','Financial District','food',30,'night',0,'food','Restaurant; verify hours and menu.'],
+['pier17','Pier 17','Financial District','music',25,'night',0,'nightlife','Event venue; only if a suitable event is scheduled.'],
+['tribecapark','Duane Park','Tribeca','park',0,'day',0,'outdoors','Small neighborhood park.'],
+['tribecagrill','Tribeca Grill','Tribeca','food',35,'night',0,'food','Restaurant; sample price only.'],
+['chelseamarket','Chelsea Market','Chelsea','food',20,'day',0,'food','Food market; vendor hours vary.'],
+['highline','The High Line – Chelsea','Chelsea','park',0,'day',0,'outdoors','Elevated park walk; hours vary by season.'],
+['chelseagalleries','Chelsea gallery walk','Chelsea','museum',0,'day',0,'culture','Self-guided gallery walk; individual hours vary.'],
+['madisonsquare','Madison Square Park','Flatiron District','park',0,'day',0,'outdoors','Park walk and sightseeing.'],
+['eataly','Eataly Flatiron','Flatiron District','food',28,'day',0,'food','Food hall; verify vendor hours.'],
+['flatironwalk','Flatiron architecture walk','Flatiron District','museum',0,'day',0,'culture','Self-guided sightseeing.'],
+['bryant','Bryant Park','Midtown','park',0,'day',0,'outdoors','Park activities; seasonal schedules.'],
+['moma','Museum of Modern Art','Midtown','museum',30,'day',0,'culture','Museum; verify admission and hours.'],
+['times','Times Square walk','Midtown','park',0,'both',0,'outdoors','Free sightseeing walk.'],
+['iridium','The Iridium','Midtown','music',35,'night',0,'nightlife','Live music; confirm show and entry policies.'],
+['donttellmama','Don’t Tell Mama','Hell’s Kitchen','music',25,'night',21,'nightlife','Piano bar; verify show and age rules.'],
+['hellskitchenwalk','Restaurant Row walk','Hell’s Kitchen','park',0,'both',0,'outdoors','Self-guided neighborhood walk.'],
+['purethai','Pure Thai Cookhouse','Hell’s Kitchen','food',23,'night',0,'food','Restaurant; verify hours.'],
+['met','The Metropolitan Museum of Art','Upper East Side','museum',30,'day',0,'culture','Museum; admission varies.'],
+['centralparkue','Central Park – East Side','Upper East Side','park',0,'day',0,'outdoors','Park walk.'],
+['bemelmans','Bemelmans Bar','Upper East Side','bar',35,'night',21,'nightlife','Cocktail bar; cover charge and policies may apply.'],
+['amnh','American Museum of Natural History','Upper West Side','museum',30,'day',0,'culture','Museum; verify admission and hours.'],
+['centralparkuw','Central Park – West Side','Upper West Side','park',0,'day',0,'outdoors','Park walk.'],
+['beacon','Beacon Theatre','Upper West Side','music',45,'night',0,'nightlife','Concerts and shows; tickets and age rules vary.'],
+['apollo','Apollo Theater','Harlem','music',35,'night',0,'nightlife','Performance venue; check schedule.'],
+['harlemstudio','Studio Museum in Harlem','Harlem','museum',20,'day',0,'culture','Museum; verify current location and hours.'],
+['marcus','Marcus Garvey Park','Harlem','park',0,'day',0,'outdoors','Park and walking.'],
+['astoriapark','Astoria Park','Astoria','park',0,'day',0,'outdoors','Waterfront park.'],
+['movingimage','Museum of the Moving Image','Astoria','museum',20,'day',0,'culture','Museum; verify hours.'],
+['bohemian','Bohemian Hall & Beer Garden','Astoria','bar',20,'night',21,'nightlife','Beer garden; verify hours and policies.'],
+['gantry','Gantry Plaza State Park','Long Island City','park',0,'day',0,'outdoors','Waterfront park.'],
+['moma_ps1','MoMA PS1','Long Island City','museum',20,'day',0,'culture','Contemporary art museum; verify hours.'],
+['licbar','LIC Bar','Long Island City','bar',16,'night',21,'nightlife','Bar with occasional music; verify schedule.'],
+['brooklynbridgepark','Brooklyn Bridge Park – DUMBO','DUMBO','park',0,'day',0,'outdoors','Waterfront views.'],
+['timeoutmarket','Time Out Market New York','DUMBO','food',25,'night',0,'food','Food hall; vendor hours vary.'],
+['stanns','St. Ann’s Warehouse','DUMBO','music',35,'night',0,'nightlife','Theater; verify performance schedule.'],
+['bam','BAM – Brooklyn Academy of Music','Downtown Brooklyn','music',35,'night',0,'nightlife','Performances; ticket prices vary.'],
+['dekalb','DeKalb Market Hall','Downtown Brooklyn','food',20,'night',0,'food','Food hall; verify hours.'],
+['fortgreene','Fort Greene Park','Downtown Brooklyn','park',0,'day',0,'outdoors','Nearby park walk.'],
+['prospect','Prospect Park','Park Slope','park',0,'day',0,'outdoors','Park walk.'],
+['nitehawk','Nitehawk Cinema – Prospect Park','Park Slope','music',22,'night',0,'nightlife','Movie theater; check screenings and age rules.'],
+['pasta_louise','Pasta Louise','Park Slope','food',24,'night',0,'food','Restaurant; verify hours.'],
+['coneyboardwalk','Coney Island Boardwalk','Coney Island','park',0,'day',0,'outdoors','Boardwalk; seasonal conditions.'],
+['luna','Luna Park in Coney Island','Coney Island','arcade',35,'day',0,'games','Amusement park; seasonal operation.'],
+['ny_aquarium','New York Aquarium','Coney Island','museum',30,'day',0,'culture','Aquarium; verify opening hours.']
+].map(([id,name,area,kind,price,period,age,vibe,desc])=>({id,name,area,kind,price,period,age,vibe,desc,img:photos[kind]}));
+const $=id=>document.getElementById(id),v=id=>venues.find(x=>x.id===id),money=n=>'$'+n,escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const initial=()=>({travelMinutes:{},availability:{},selectedSlot:"",name:'',date:'2026-11-07',time:'19:00',area:'Greenwich Village',vibe:'nightlife',period:'night',food:false,people:[],stops:[],votes:{},voteSlot:1,round:1,sequence:0,saved:[]});
+let s;try{s=JSON.parse(localStorage.getItem('dayout-original-design-groupflow-v1'))||initial()}catch{s=initial()}let history=[],proposal=null,activeView='planner',feedback="Choose your neighborhood, vibe and budget, then generate an itinerary.";
+function persist(){try{localStorage.setItem('dayout-original-design-groupflow-v1',JSON.stringify(s))}catch(e){}}
+function snapshot(){history.push(JSON.stringify(s));if(history.length>30)history.shift()}
+const people=()=>s.people.filter(p=>p.active),minBudget=()=>people().length?Math.min(...people().map(p=>p.budget)):0,spent=(ids=s.stops)=>ids.reduce((sum,id)=>sum+(v(id)?.price||0),0),totalCost=(ids=s.stops)=>spent(ids);
+const neighborhoodGroups=[['Greenwich Village','West Village','East Village','SoHo','Chinatown','Lower East Side'],['Williamsburg','East Williamsburg','Bushwick'],['Chelsea','Flatiron District','Midtown','Hell’s Kitchen'],['Astoria','Long Island City'],['DUMBO','Downtown Brooklyn','Park Slope']];
+function isNear(a,b){return a===b||neighborhoodGroups.some(g=>g.includes(a)&&g.includes(b))}
+function groupAreas(){const areas=people().map(p=>p.preferredArea).filter(Boolean);return areas.length?[...new Set(areas)]:[s.area]}
+function eligible(x){return x&&groupAreas().some(a=>isNear(x.area,a))&&(x.period==='both'||x.period===s.period)&&(!x.age||people().every(p=>p.age>=x.age))}
+function pool(){return venues.filter(eligible).filter(x=>s.vibe==='mixed'||x.vibe===s.vibe||x.vibe==='nightlife'&&s.vibe==='games'&&x.kind==='arcade'||x.vibe==='outdoors'&&s.vibe==='culture'||x.kind==='music'&&s.vibe==='nightlife').sort((a,b)=>preferenceScore(b)-preferenceScore(a)||a.price-b.price)}
+function preferenceScore(x){return people().reduce((score,p)=>score+(p.interest===x.vibe||p.interest==='music'&&x.kind==='music'||p.interest==='games'&&x.kind==='arcade'?1:0),0)}
+function recommend(force=false){let a=pool();if(!a.length)return [];let affordable=a.filter(x=>x.price<=minBudget());if(!affordable.length)return [];let count=Math.min(3,affordable.length);let seed=s.sequence%affordable.length;let chosen=[];for(let i=0;i<affordable.length&&chosen.length<count;i++){let x=affordable[(seed+i)%affordable.length];if(spent(chosen)+x.price<=minBudget())chosen.push(x.id)}return chosen}
+function showRescue(){if(!people().length)return;let invalid=s.stops.some(id=>!eligible(v(id)))||totalCost()>minBudget();if(!invalid)return;let next=[];let opts=pool();for(let id of s.stops){let x=v(id);if(eligible(x)&&!next.includes(id)&&spent(next)+x.price<=minBudget())next.push(id);else{let replacement=opts.find(y=>!next.includes(y.id)&&spent(next)+y.price<=minBudget());if(replacement)next.push(replacement.id)}}if(JSON.stringify(next)===JSON.stringify(s.stops))return;proposal={before:[...s.stops],after:next};$('before').innerHTML=proposal.before.map(id=>`<li>${escape(v(id)?.name||'Unknown')} — ${money(v(id)?.price||0)}</li>`).join('');$('after').innerHTML=proposal.after.map(id=>`<li>${escape(v(id)?.name||'Unknown')} — ${money(v(id)?.price||0)}</li>`).join('');$('rescueExplanation').textContent='The group budget, age eligibility, neighborhood, or time changed. Review the smallest practical adjustment.';$('modal').classList.add('show')}
+function change(fn,rescue=true){snapshot();fn();persist();render();if(rescue)showRescue()}
+function notify(message){feedback=message;$("actionFeedback").textContent=message}
+function generate(){if(!readyToGenerate()){notify('Add friends, save each participant’s budget and activity preference, and complete Smart Scheduling before generating a plan.');return}let previous=[...s.stops];change(()=>{s.sequence++;s.stops=recommend();s.votes={};s.round++;s.voteSlot=Math.max(0,s.stops.length-1)},false);notify(s.stops.length?(JSON.stringify(previous)===JSON.stringify(s.stops)?"The current plan is still the best match from available sample venues. Change your vibe or neighborhood for more options.":"✨ New plan generated! The itinerary and estimated total have been updated."):"No eligible venues fit this combination. Change the neighborhood, vibe, age or budget.")}
+function swap(index,id){let x=v(id);if(!eligible(x))return alert('That venue does not match the selected neighborhood, time, or group ages.');let next=[...s.stops];next[index]=id;if(s.stops.includes(id)&&s.stops[index]!==id)return notify('That venue is already in another stop.');if(totalCost(next)>minBudget())return notify('This swap would exceed the group budget.');change(()=>{s.stops=next;s.votes={};s.round++;s.voteSlot=index},false);notify('⇄ Swapped to '+x.name+'. Your other stops were preserved.')}
+
+// Venue detail metadata. Prices are DEMO ESTIMATES, not actual quotes.
+const venueInfo={
+ westlight:{address:'111 N 12th St, Brooklyn, NY 11249',url:'https://www.westlightnyc.com/',blurb:'Rooftop cocktail lounge at The William Vale with panoramic Manhattan skyline views. Best for an evening skyline stop.',photo:'https://images.getbento.com/accounts/e911161024a627d84acd70f29ca7b56f/media/6ksIfVZqS5K5gjYfi7gE_Studio_Munge_Westlight_MichaelStavaridis%20%285%29.jpg?auto=compress%2Cformat&cs=origin&fit=max&h=1200&w=1600',benefit:'No NYC student or resident free-entry benefit confirmed. Check cover charges and reservations.'},
+ met:{address:'1000 Fifth Ave, New York, NY 10028',url:'https://www.metmuseum.org/plan-your-visit',blurb:'Major art museum featuring works spanning cultures and centuries, on Museum Mile by Central Park.',benefit:'Pay-what-you-wish admission for New York State residents and students from New York, New Jersey and Connecticut with qualifying ID; check current rules on the official site.'},
+ amnh:{address:'200 Central Park West, New York, NY 10024',url:'https://www.amnh.org/plan-your-visit',blurb:'Natural history museum with dinosaurs, biodiversity and science exhibits.',benefit:'New York State residents can use pay-what-you-wish general admission with proof of residency; special exhibitions may cost extra.'},
+ moma:{address:'11 W 53rd St, New York, NY 10019',url:'https://www.moma.org/visit/',blurb:'Modern and contemporary art museum with rotating exhibitions.',benefit:'Admission discounts and special offers vary; do not assume free NYC student or resident entry. Verify on the official site.'},
+ moma_ps1:{address:'22-25 Jackson Ave, Long Island City, NY 11101',url:'https://www.momaps1.org/visit',blurb:'Contemporary art center in Long Island City, known for experimental exhibitions.',benefit:'Check the official admission page for current NYC resident benefits and eligibility.'},
+ bryant:{address:'Between Fifth and Sixth Avenues, W 40th–42nd St, Manhattan',url:'https://bryantpark.org/',blurb:'Public park with seasonal events, lawns and seating in Midtown.',benefit:'Free public park entry; some activities and events cost extra.'},
+ villagepark:{address:'Washington Square, Greenwich Village, Manhattan',url:'https://www.nycgovparks.org/parks/washington-square-park',blurb:'Iconic village park with an arch, fountain and street performances.',benefit:'Free public park entry.'},
+ centralparkue:{address:'Central Park, East Side, Manhattan',url:'https://www.centralparknyc.org/',blurb:'Walk along Central Park’s east-side paths and scenic landscapes.',benefit:'Free public park entry; some attractions cost extra.'},
+ centralparkuw:{address:'Central Park, West Side, Manhattan',url:'https://www.centralparknyc.org/',blurb:'Explore the park’s western paths, lawns and landmarks.',benefit:'Free public park entry; some attractions cost extra.'},
+ wburgwalk:{address:'East River waterfront, Williamsburg, Brooklyn',blurb:'A scenic waterfront walk with Manhattan skyline views.',benefit:'Free public outdoor walk.'}
+};
+let detailsCurrentId=null;
+function closeVenueDetails(){
+  $('detailsModal').classList.remove('show');
+  detailsCurrentId=null;
+}
+function showVenueDetails(id){
+  const x=v(id);if(!x){notify('This venue is not available in the sample directory.');return}
+  detailsCurrentId=id;
+  const info=venueInfo[id]||{};
+  const isPark=['park'].includes(x.kind);
+  const benefit=info.benefit||(isPark?'Free outdoor public access is typical; verify park hours and event fees.':'No verified NYC student/resident free-entry benefit is listed for this venue. Check directly before visiting.');
+  const photo=info.photo||x.img;
+  const photoNote=info.photo?'Venue photograph (external source; may not load offline).':'Illustrative category photograph — not a verified image of this exact venue.';
+  const maps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent((info.address||x.name+', '+x.area+', NYC'));
+  const official=info.url?`<a href="${escape(info.url)}" target="_blank" rel="noopener noreferrer" style="font-weight:700;color:#653bf1">🌐 Official venue website ↗</a>`:'<span class="muted">Official website not yet verified for this listing.</span>';
+  $('detailsTitle').textContent=x.name;
+  $('detailsBody').innerHTML=`
+    <img src="${escape(photo)}" alt="${escape(x.name)} venue illustration" style="display:block;width:100%;height:230px;object-fit:cover;border-radius:13px;background:#f0ecff" onerror="this.style.display='none'">
+    <p class="muted" style="font-size:11px;margin:5px 0 14px">${escape(photoNote)}</p>
+    <p style="font-size:15px;line-height:1.65">${escape(info.blurb||x.desc)}</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0">
+      <div class="note"><strong>📍 Location</strong><br>${escape(info.address||x.area+', New York City')}<br><a href="${escape(maps)}" target="_blank" rel="noopener noreferrer">Open map ↗</a></div>
+      <div class="note"><strong>💵 Estimated spending</strong><br>${money(x.price)} per person<br><small>Prototype estimate; not a live price</small></div>
+      <div class="note"><strong>🎯 Type</strong><br>${escape(x.kind)}${x.age?'<br>🔞 Listed as '+x.age+'+ in prototype':''}</div>
+      <div class="note"><strong>🕒 Hours / bookings</strong><br>Not live verified<br><small>Check schedule, tickets and reservations.</small></div>
+    </div>
+    <div class="note" style="margin:12px 0;background:#f1edff"><strong>🎓 NYC student / resident benefits</strong><p style="margin:5px 0">${escape(benefit)}</p><small>Bring qualifying ID where applicable. Verify admission terms before going.</small></div>
+    <div style="margin:14px 0">${official}</div>
+    <div class="row" style="flex-wrap:wrap;gap:8px;margin-top:16px">
+      <button type="button" id="detailsAdd" class="small">＋ Add to my plan</button>
+      <label class="muted" for="detailsSwapIndex">Replace:</label>
+      <select id="detailsSwapIndex" style="max-width:180px">${s.stops.map((stop,i)=>`<option value="${i}">Stop ${i+1}: ${escape(v(stop)?.name||'Unknown')}</option>`).join('')}</select>
+      <button type="button" id="detailsSwap" class="soft small" ${!s.stops.length?'disabled':''}>⇄ Swap selected stop</button>
+    </div>`;
+  $('detailsActionMessage').textContent='';
+  $('detailsModal').classList.add('show');
+}
+$('detailsClose').onclick=$('detailsDone').onclick=closeVenueDetails;
+$('detailsModal').addEventListener('click',e=>{if(e.target===$('detailsModal'))closeVenueDetails()});
+
+$('detailsBody').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b||!detailsCurrentId)return;
+  const x=v(detailsCurrentId);if(!x)return;
+  if(b.id==='detailsAdd'){
+    if(!eligible(x)){$('detailsActionMessage').textContent='This venue does not fit the current neighborhood, outing time or ages.';return}
+    if(s.stops.includes(x.id)){$('detailsActionMessage').textContent='This venue is already in your itinerary.';return}
+    if(totalCost([...s.stops,x.id])>minBudget()){$('detailsActionMessage').textContent='Adding this venue would exceed the group budget.';return}
+    change(()=>{s.stops.push(x.id);s.votes={};s.round++},false);
+    notify('＋ Added '+x.name+' to the itinerary.');
+    closeVenueDetails();
+  }else if(b.id==='detailsSwap'){
+    const index=Number($('detailsSwapIndex').value);
+    if(s.stops.includes(x.id)&&s.stops[index]!==x.id){$('detailsActionMessage').textContent='That venue is already another stop. Choose a different venue.';return}
+    if(s.stops[index]===x.id){$('detailsActionMessage').textContent='This stop already uses that venue.';return}
+    if(!eligible(x)){$('detailsActionMessage').textContent='This venue does not fit the current neighborhood, outing time or ages.';return}
+    if(totalCost(s.stops.map((z,i)=>i===index?x.id:z))>minBudget()){$('detailsActionMessage').textContent='This swap would exceed the group budget.';return}
+    swap(index,x.id);
+    closeVenueDetails();
+  }
+});
+
+
+
+// Invitation and budget entry are local demo simulations, not secure or networked.
+function readyToGenerate(){return people().length>0&&people().every(p=>p.budgetSubmitted&&Array.isArray(s.availability?.[p.id])&&s.availability[p.id].length>0)&&Boolean(s.selectedSlot)}
+function renderProjectExtras(){
+  for(const id of ['inviteFriend','budgetFriend']){
+    const el=$(id),old=el.value;
+    el.innerHTML=s.people.map(p=>`<option value="${p.id}">${escape(p.name)}${p.active?'':' (not attending)'}</option>`).join('');
+    if(s.people.some(p=>String(p.id)===old))el.value=old;
+  }
+  $('generate').disabled=!readyToGenerate();
+  $('generate').title=readyToGenerate()?'Generate a plan':'First add friends, save budgets and availability, then confirm a group time';
+}
+let lastInviteMessage='';
+$('inviteCreate').onclick=()=>{
+  const p=s.people.find(p=>String(p.id)===$('inviteFriend').value);
+  if(!p)return;
+  const invitation=`You're invited to ${s.name||'a DayOut outing'}! 📍 ${s.area} · ${s.date} at ${s.time}. We'll choose activities together using DayOut. Reply to the organizer to confirm.`;
+  lastInviteMessage=invitation;
+  $('invitePreview').textContent=`Invitation prepared for ${p.name} (not sent): ${invitation}`;
+};
+$('inviteCopy').onclick=async()=>{
+  if(!lastInviteMessage){$('inviteCreate').click();if(!lastInviteMessage)return}
+  try{await navigator.clipboard.writeText(lastInviteMessage);$('invitePreview').textContent='✓ Invitation copied. Paste it into a chat to send manually.'}
+  catch{$('invitePreview').textContent='Copy is blocked in this preview. Select and copy this message manually: '+lastInviteMessage}
+};
+$('budgetFriend').addEventListener('change',()=>{const p=s.people.find(p=>String(p.id)===$('budgetFriend').value);if(p){$('privateInterest').value=p.interest||'games';$('privateArea').value=p.preferredArea||''}});
+$('budgetSubmit').onclick=()=>{
+  const p=s.people.find(p=>String(p.id)===$('budgetFriend').value);
+  const input=$('privateBudget'),amount=Number(input.value);
+  if(!p||input.value.trim()===''||!Number.isFinite(amount)||amount<0||amount>500){
+    $('budgetStatus').textContent='Enter a valid amount between $0 and $500.';return;
+  }
+  change(()=>{p.budget=amount;p.budgetSubmitted=true;p.interest=$('privateInterest').value;p.preferredArea=$('privateArea').value},true);
+  input.value='';
+  $('budgetStatus').textContent=`✓ ${p.name}'s budget and preferences were saved and is hidden from the participant list. The itinerary was checked against the group's budgets.`;
+};
+
+function render(){renderProjectExtras();for(let [id,val] of Object.entries({planName:s.name,date:s.date,time:s.time,area:s.area,vibe:s.vibe,period:s.period}))$(id).value=val;$('areaNotice').textContent='DayOut can combine nearby neighborhoods. Real venue hours and availability must be checked.';$('count').textContent=people().length+' attending';$('actionFeedback').textContent=feedback;
+$('people').innerHTML=s.people.map(p=>`<div class="person"><div class="personhead"><div class="row"><span class="avatar">${escape(p.name[0].toUpperCase())}</span><div><strong>${escape(p.name)}</strong><div class="muted">🔒 ${p.budgetSubmitted?"Budget submitted":"Budget pending"} · ${p.age} years</div></div></div><div class="row"><label class="muted"><input type="checkbox" data-person="${p.id}" data-key="active" ${p.active?'checked':''}> Attending</label><button class="soft small" data-remove="${p.id}">✕</button></div></div><div class="field" style="margin-top:8px"><label class="muted">Age</label><input type="number" min="0" max="110" data-person="${p.id}" data-key="age" value="${p.age}"></div><label class="muted">Preference</label><select data-person="${p.id}" data-key="interest">${['nightlife','games','culture','outdoors','food','music'].map(k=>`<option value="${k}" ${p.interest===k?'selected':''}>${k}</option>`).join('')}</select></div>`).join('');
+$('summaryText').textContent=`${s.vibe[0].toUpperCase()+s.vibe.slice(1)} plan for ${people().length} friends in ${s.area} · ${money(totalCost())} per person`;$('areaChip').textContent='📍 '+s.area+' + nearby';$('vibeChip').textContent='🌙 '+s.vibe;$('groupChip').textContent='👥 '+people().length+' friends';$('budgetChip').textContent='🔒 Budget checked';$('total').textContent=money(totalCost())+' per person';let good=people().length&&s.stops.length&&s.stops.every(id=>eligible(v(id)))&&totalCost()<=minBudget();$('status').innerHTML=`<div class="alert ${good?'':'warn'}">${good?'✓ Plan fits the group’s budget, neighborhood and age rules.':'⚠ The current plan needs attention. Generate a new plan or review DayOut Rescue.'}</div>`;
+$('stops').innerHTML=s.stops.length?s.stops.map((id,i)=>{let x=v(id);return `${i?`<div class="note" style="margin:8px 0 8px 50px">🚶 Estimated travel from previous stop: <input type="number" min="0" max="180" step="5" data-travel-leg="${i}" value="${Number(s.travelMinutes?.[i]??15)}" style="display:inline-block;width:78px;padding:5px"> minutes <span class="muted">(editable illustrative estimate; no live routing or travel charges)</span></div>`:''}<div class="step"><div class="number">${i+1}</div><div class="stop"><img src="${x.img}" alt="Illustrative ${escape(x.kind)} image" loading="lazy"><div><div class="head"><div><div class="muted">${i===0?s.time:'Stop '+(i+1)} · ${escape(x.area)}</div><h3>${escape(x.name)}</h3></div><span class="price">${money(x.price)}</span></div><div class="row"><span class="pill purplepill">${escape(x.kind)}</span>${x.age?`<span class="pill warning">${x.age}+</span>`:''}</div><p>${escape(x.desc)}</p><p>📍 ${escape(x.area)} · <span class="green">Hours: verify with venue</span></p><div class="stopbuttons"><button class="soft small" data-show-options="${i}">⇄ Swap food / activity</button><button class="outline small" data-detail="${id}">View details</button></div><div id="options-${i}" class="hide"><div class="note">Swap this stop with any eligible food, activity, museum, game, or nightlife venue in ${escape(s.area)}. Your other stops stay unchanged.</div><div class="row" style="margin:8px 0"><label class="muted" for="swapFilter-${i}">Show</label><select id="swapFilter-${i}" data-swap-filter="${i}" style="max-width:210px"><option value="all">All categories</option><option value="food">🍜 Food & drinks</option><option value="activity">🎯 Activities & games</option><option value="culture">🏛️ Museums & culture</option><option value="outdoors">🌳 Outdoors</option><option value="nightlife">🌙 Nightlife & music</option></select></div>${venues.filter(y=>eligible(y)&&y.id!==id).map(y=>`<div class="option" data-swap-kind="${y.kind}" data-swap-vibe="${y.vibe}"><div class="row"><img src="${y.img}" loading="lazy" alt=""><div><strong>${escape(y.name)}</strong><div class="muted">${money(y.price)} · ${escape(y.area)}</div></div></div><button class="small" data-swap="${i}" data-id="${y.id}" ${totalCost(s.stops.map((z,j)=>j===i?y.id:z))>minBudget()?'disabled':''}>Use</button></div>`).join('')}</div></div></div></div>`}).join(''):'<div class="alert warn">No suitable plan can be generated for these constraints. Try changing the vibe, time, or budget; food remains optional.</div>';
+$('costs').innerHTML=`<div><span class="muted">Activities</span><strong>${money(spent())}</strong></div><div><span class="muted">Group budget remaining</span><strong>${money(Math.max(0,minBudget()-totalCost()))}</strong></div>`;
+let oldVoter=$('voter').value;$('voter').innerHTML=people().map(p=>`<option value="${p.id}">${escape(p.name)}</option>`).join('');if(people().some(p=>String(p.id)===oldVoter))$('voter').value=oldVoter;let oldSlot=$('voteSlot').value;$('voteSlot').innerHTML=s.stops.map((id,i)=>`<option value="${i}">Stop ${i+1}: ${escape(v(id)?.name||'')}</option>`).join('');$('voteSlot').value=oldSlot!==''&&Number(oldSlot)<s.stops.length?oldSlot:String(Math.min(s.voteSlot,s.stops.length-1));renderVotes();renderExplore();renderSaved();renderSchedule();view(activeView)}
+function voteOptions(){let slot=Number($('voteSlot').value)||0;let current=v(s.stops[slot]);return [current,...pool().filter(x=>x.id!==current?.id)].filter(Boolean).slice(0,7)}
+function renderVotes(){let opts=voteOptions(),slot=Number($('voteSlot').value)||0,key=p=>`${s.round}:${slot}:${p.id}`,votes=people().map(p=>s.votes[key(p)]).filter(Boolean),tally={};votes.forEach(id=>tally[id]=(tally[id]||0)+1);let high=Math.max(0,...Object.values(tally)),leaders=Object.keys(tally).filter(id=>tally[id]===high),all=people().length>0&&votes.length===people().length,unique=all&&leaders.length===1,winner=unique?v(leaders[0]):null;$('voteItems').innerHTML=opts.map(x=>{let n=tally[x.id]||0,pct=votes.length?Math.round(n/people().length*100):0;return `<div class="voterow"><div class="row"><img src="${x.img}" loading="lazy" alt=""><div style="flex:1"><div class="row space"><strong>${escape(x.name)}</strong><span class="muted">${money(x.price)}</span></div><div class="bar"><div class="fill" style="width:${pct}%"></div></div><span class="muted">${n} votes (${pct}%)</span></div><button class="soft small" data-vote="${x.id}" ${!people().length?'disabled':''}>${s.votes[key(people().find(p=>String(p.id)===$('voter').value)||people()[0]||{id:-1})]===x.id?'✓ Voted':'Vote'}</button></div></div>`}).join('');$('voteResult').innerHTML=unique?`<div class="winner"><strong>🏆 ${escape(winner.name)} won!</strong><div>${tally[winner.id]} of ${people().length} friends (${Math.round(tally[winner.id]/people().length*100)}%) voted for this option.</div><div class="muted">DayOut ${s.stops[slot]===winner.id?'has this stop in the plan.':'will apply it if the budget and age rules allow.'}</div></div>`:all&&leaders.length>1?`<div class="tie"><strong>🤝 It’s a tie!</strong><div>${leaders.map(id=>escape(v(id)?.name||id)).join(' and ')} have ${high} votes each. Start a new round to decide.</div></div>`:`<div class="note"><strong>${votes.length} of ${people().length} friends voted.</strong><br>${votes.length?'Leading: '+leaders.map(id=>escape(v(id)?.name||id)).join(' / '):'Choose a venue to cast your vote.'} Results are finalized after everyone votes.</div>`;$('applyWinner').classList.toggle('hide',!unique||s.stops[slot]===winner?.id);$('applyWinner').disabled=!!winner&&totalCost(s.stops.map((id,i)=>i===slot?winner.id:id))>minBudget();$('applyWinner').dataset.id=winner?.id||''}
+function cast(id){let p=people().find(p=>String(p.id)===$('voter').value);if(!p)return;let slot=Number($('voteSlot').value)||0;s.votes[`${s.round}:${slot}:${p.id}`]=id;persist();renderVotes();let votes=people().map(p=>s.votes[`${s.round}:${slot}:${p.id}`]);if(votes.every(Boolean)&&votes.length){let counts={};votes.forEach(k=>counts[k]=(counts[k]||0)+1);let top=Math.max(...Object.values(counts)),winners=Object.keys(counts).filter(k=>counts[k]===top);if(winners.length===1){let chosen=winners[0],newStops=[...s.stops];newStops[slot]=chosen;if(spent(newStops)<=minBudget()&&eligible(v(chosen))){snapshot();s.stops=newStops;persist();render();$('voteSlot').value=String(slot);renderVotes()}else{$('voteResult').innerHTML+=`<div class="alert warn">The winning venue exceeds a budget or eligibility limit. Adjust the budget or vote again.</div>`}}}}
+function renderExplore(){$('exploreItems').innerHTML=venues.filter(x=>groupAreas().some(a=>isNear(x.area,a))).map(x=>`<div class="option"><div class="row"><img src="${x.img}" loading="lazy" alt=""><div><strong>${escape(x.name)}</strong><div class="muted">${escape(x.kind)} · ${money(x.price)} · ${escape(x.period)} ${x.age?'· '+x.age+'+':''}</div></div></div><button class="small" data-detail="${x.id}">Details</button></div>`).join('');$('locationInfo').textContent='DayOut can suggest venues in '+s.area+' and neighboring areas. Walking routes and venue hours are not live-verified.'}
+function renderSaved(){$('savedItems').innerHTML=s.saved.length?s.saved.map((p,i)=>`<div class="option"><div><strong>${escape(p.name)}</strong><div class="muted">${escape(p.area)} · ${escape(p.date)} · ${money(spent(p.stops))}</div></div><div class="row"><button class="small" data-load="${i}">Open</button><button class="soft small" data-delete="${i}">Delete</button></div></div>`).join(''):'<p class="muted">No saved plans. Click Save plan in Quick actions.</p>'}
+function view(tab){activeView=tab;$('plannerView').classList.toggle('hide',tab!=='planner');$('exploreView').classList.toggle('hide',tab!=='explore');$('savedView').classList.toggle('hide',tab!=='saved');document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('sel',b.dataset.nav===tab))}
+document.addEventListener('click',e=>{let b=e.target.closest('button');if(!b)return;if(b.dataset.nav)view(b.dataset.nav);if(b.dataset.showOptions!==undefined)$('options-'+b.dataset.showOptions).classList.toggle('hide');if(b.dataset.swap!==undefined)swap(Number(b.dataset.swap),b.dataset.id);if(b.dataset.vote)cast(b.dataset.vote);if(b.dataset.remove)change(()=>s.people=s.people.filter(p=>p.id!==Number(b.dataset.remove)));if(b.dataset.detail){showVenueDetails(b.dataset.detail)}if(b.dataset.load!==undefined){let saved=s.saved;s={...structuredClone(saved[Number(b.dataset.load)]),saved};persist();render();view('planner')}if(b.dataset.delete!==undefined){s.saved.splice(Number(b.dataset.delete),1);persist();renderSaved()}});
+document.addEventListener('change',e=>{let el=e.target;if(el.dataset.travelLeg!==undefined){const i=Number(el.dataset.travelLeg),value=Number(el.value);if(Number.isFinite(value)&&value>=0&&value<=180){if(!s.travelMinutes)s.travelMinutes={};s.travelMinutes[i]=value;persist();}return;}if(el.dataset.swapFilter!==undefined){let box=$('options-'+el.dataset.swapFilter);box.querySelectorAll('[data-swap-kind]').forEach(row=>{let k=row.dataset.swapKind,vi=row.dataset.swapVibe,cat=el.value;row.classList.toggle('hide',!(cat==='all'||cat==='food'&&['food','pizza','coffee'].includes(k)||cat==='activity'&&['arcade','games'].includes(k)||cat==='culture'&&['museum','culture'].includes(k)||cat==='outdoors'&&['park','outdoors'].includes(k)||cat==='nightlife'&&['club','bar','music'].includes(k)||cat===vi))});return;}if(el.dataset.person){let p=s.people.find(p=>p.id===Number(el.dataset.person));if(p)change(()=>p[el.dataset.key]=el.dataset.key==='active'?el.checked:['budget','age'].includes(el.dataset.key)?Math.max(0,Number(el.value)||0):el.value)}else if(['planName','date','time','area','vibe','period','includeFood'].includes(el.id)){let key={planName:'name',includeFood:'food'}[el.id]||el.id;change(()=>{s[key]=el.type==='checkbox'?el.checked:el.value;if(['area','vibe','period','includeFood'].includes(el.id)){s.sequence++;s.stops=recommend();s.votes={};s.round++}},false)}else if(['voter','voteSlot'].includes(el.id))renderVotes()});
+$('generate').onclick=generate;$('regenerate').onclick=generate;
+function openNewOuting(){ $('newOutingModal').classList.add('show'); }
+function closeNewOuting(){ $('newOutingModal').classList.remove('show'); }
+function createNewOuting(keepFriends){
+  const previous=s;
+  const fresh=initial();
+  fresh.saved=structuredClone(previous.saved||[]);
+  if(keepFriends)fresh.people=structuredClone(previous.people||[]);
+  // A new outing must have a new blank itinerary, votes, and scheduling responses.
+  fresh.name='';
+  const d=new Date();fresh.date=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  fresh.time='19:00';
+  fresh.stops=[];fresh.travelMinutes={};
+  fresh.votes={};
+  fresh.availability={};
+  fresh.customSlots=[];
+  fresh.selectedSlot='';
+  fresh.sequence=0;
+  fresh.round=1;
+  fresh.voteSlot=0;
+  s=fresh;
+  history=[];
+  proposal=null;
+  pendingProposedSlot=null;
+  persist();
+  closeNewOuting();
+  render();
+  view('planner');
+  notify(keepFriends?'✨ New blank outing created with the same friends. Choose a neighborhood and generate a plan.':'✨ New blank outing created with a fresh group. Add friends, then generate a plan.');
+  window.scrollTo({top:0,behavior:'smooth'});
+  $('planName').focus();
+}
+$('newPlanTop').onclick=openNewOuting;$('createOutingNav').onclick=openNewOuting;
+$('newKeepFriends').onclick=()=>createNewOuting(true);
+$('newFreshFriends').onclick=()=>createNewOuting(false);
+$('newOutingCancel').onclick=closeNewOuting;
+$('newOutingModal').addEventListener('click',e=>{if(e.target===$('newOutingModal'))closeNewOuting()});
+$('lowerBudget').onclick=()=>{let p=people()[0];if(p){change(()=>p.budget=30);notify('💰 '+p.name+' now has a $30 budget. The itinerary was checked and DayOut Rescue will suggest changes if needed.')}};
+
+$('switchPeriod').onclick=()=>{change(()=>{s.period=s.period==='night'?'day':'night';s.vibe=s.period==='night'?'nightlife':'outdoors';s.sequence++;s.stops=recommend();s.votes={};s.round++},false);notify('🌙 Switched to '+s.period+' mode. Only matching '+s.area+' venues are shown; food remains optional.')};
+// Add directly from either field: avoid programmatically clicking another button,
+// which is unreliable in some iOS Safari / embedded preview environments.
+function addFriendFromInput(inputId){
+  const input=$(inputId);
+  const name=(input.value||'').trim();
+  if(!name){input.focus();return}
+  if(s.people.length>=20){notify('DayOut supports up to 20 participants. Remove an existing participant first.');return}
+  const duplicate=s.people.some(p=>p.name.toLowerCase()===name.toLowerCase());
+  if(duplicate){notify(name+' is already in your group.');return}
+  input.blur();
+  const newId=Math.max(0,...s.people.map(p=>Number(p.id)||0))+1;
+  change(()=>s.people.push({id:newId,name:name.slice(0,40),budget:60,budgetSubmitted:false,age:22,active:true,interest:'games',preferredArea:''}));
+  $('inviteNameNew').value='';$('friendName').value='';
+  notify('✓ '+name+' added! Complete their budget, preferences and availability below.');
+  const selected=$('inviteFriend');if(selected)selected.value=String(newId);
+}
+
+
+for(const id of ['inviteNameNew','friendName']){
+  $(id).addEventListener('keydown',e=>{
+    if(e.key==='Enter'){e.preventDefault();window.dayOutAddFriend(e,id)}
+  });
+}
+$('addStop').onclick=openAddStop;
+$('save').onclick=()=>{s.saved.push(structuredClone({...s,saved:[]}));persist();renderSaved();notify('💾 Plan saved. Open My Plans to reload it.');view('saved')};
+$('undo').onclick=()=>{if(!history.length)return alert('No changes to undo.');s=JSON.parse(history.pop());persist();render();notify('↶ Your last change was undone.')};
+$('reset').onclick=()=>{if(confirm('Reset this demo?')){s=initial();history=[];persist();render();view('planner');notify('Demo reset to the starting group and itinerary.')}};
+$('newRound').onclick=()=>{change(()=>{s.round++;s.votes={}},false);notify('🗳️ A new voting round has started.')};
+$('applyWinner').onclick=()=>{let id=$('applyWinner').dataset.id;if(id)swap(Number($('voteSlot').value)||0,id)};
+$('approve').onclick=()=>{if(proposal){snapshot();s.stops=proposal.after;s.votes={};s.round++;proposal=null;persist();render()}$('modal').classList.remove('show')};
+$('reject').onclick=$('close').onclick=()=>{proposal=null;$('modal').classList.remove('show')};
+
+// Guided cancellation: explicitly choose the count and the participants.
+let cancellationSelection=new Set();
+function openCancellation(){
+  const attending=people();
+  if(!attending.length){notify('No attending friends to cancel. Rejoin someone using the Attending checkbox.');return;}
+  cancellationSelection.clear();
+  const maximum=Math.min(20,attending.length);
+  $('cancelCount').innerHTML=Array.from({length:maximum},(_,i)=>`<option value="${i+1}">${i+1} ${i===0?'person':'people'}</option>`).join('');
+  $('cancelCount').value='1';
+  renderCancellation();
+  $('cancelModal').classList.add('show');
+}
+function renderCancellation(){
+  const attending=people(),wanted=Number($('cancelCount').value);
+  $('cancelNames').innerHTML=attending.map(p=>`<label style="display:flex;align-items:center;gap:12px;border:1px solid #e8e7f2;border-radius:11px;padding:12px;margin:7px 0;cursor:pointer"><input type="checkbox" data-cancel-id="${p.id}" ${cancellationSelection.has(p.id)?'checked':''}><span class="avatar">${escape(p.name[0].toUpperCase())}</span><span><strong>${escape(p.name)}</strong><span class="muted" style="display:block">Budget submitted privately · currently attending</span></span></label>`).join('');
+  const selected=cancellationSelection.size;
+  $('cancelSelectionStatus').textContent=`${selected} of ${wanted} selected. ${selected===wanted?'Ready to confirm.':'Choose exactly '+wanted+' '+(wanted===1?'friend':'friends')+'.'}`;
+  $('confirmCancel').disabled=selected!==wanted;
+}
+function dismissCancellation(){$('cancelModal').classList.remove('show');cancellationSelection.clear()}
+$('cancelTwo').onclick=openCancellation;
+$('cancelClose').onclick=dismissCancellation;
+$('cancelDismiss').onclick=dismissCancellation;
+$('cancelCount').addEventListener('change',()=>{cancellationSelection.clear();renderCancellation()});
+$('cancelNames').addEventListener('change',e=>{
+  const box=e.target.closest('[data-cancel-id]');if(!box)return;
+  const id=Number(box.dataset.cancelId),wanted=Number($('cancelCount').value);
+  if(box.checked){if(cancellationSelection.size>=wanted){box.checked=false;return}cancellationSelection.add(id)}
+  else cancellationSelection.delete(id);
+  renderCancellation();
+});
+$('confirmCancel').onclick=()=>{
+  const wanted=Number($('cancelCount').value);
+  const chosen=people().filter(p=>cancellationSelection.has(p.id));
+  if(chosen.length!==wanted||wanted<1||wanted>20)return;
+  const before=[...s.stops],oldBudget=minBudget(),oldCount=people().length;
+  dismissCancellation();
+  change(()=>{chosen.forEach(p=>p.active=false);s.votes={};s.round++;s.voteSlot=Math.max(0,s.stops.length-1)},true);
+  const names=chosen.map(p=>p.name).join(', ');
+  const afterCount=people().length;
+  const changed=JSON.stringify(before)!==JSON.stringify(s.stops);
+  let message=`👥 ${names} ${chosen.length===1?'has':'have'} cancelled. Group updated: ${oldCount} → ${afterCount} attending.`;
+  if(!afterCount){message+=' No attendees remain; add or rejoin friends before generating a plan.'}
+  else if(proposal){message+=' DayOut Rescue recommends changes. Review and approve them before your itinerary changes.'}
+  else if(changed){message+=' The itinerary was updated.'}
+  else{message+=' Your existing itinerary still meets the remaining group’s budget and eligibility rules, so no venue changes are needed.'}
+  message+=` Lowest group budget: ${money(oldBudget)} → ${money(minBudget())}.`;
+  notify(message);
+  // Preserve the user's previous itinerary unless a rescue change is approved.
+};
+
+
+// User-controlled additional stop selection, not an unexplained auto-pick.
+function openAddStop(){
+  $('addStopCategory').value='all';
+  renderAddStopChoices();
+  $('addStopModal').classList.add('show');
+}
+function closeAddStop(){$('addStopModal').classList.remove('show')}
+function renderAddStopChoices(){
+  const category=$('addStopCategory').value;
+  const options=venues.filter(x=>eligible(x)&&!s.stops.includes(x.id)).filter(x=>{
+    if(category==='all')return true;
+    if(category==='food')return ['pizza','food','coffee'].includes(x.kind);
+    if(category==='music')return x.kind==='music';
+    if(category==='games')return x.kind==='arcade';
+    if(category==='outdoors')return x.kind==='park';
+    return ['rooftop','club','bar','music'].includes(x.kind);
+  });
+  const remaining=minBudget()-totalCost();
+  $('addStopSummary').textContent=`${s.area} · ${s.period} · ${people().length} attending · ${money(totalCost())} currently planned · ${money(Math.max(0,remaining))} remaining per person.`;
+  $('addStopChoices').innerHTML=options.length?options.map(x=>{
+    const affordable=x.price<=remaining;
+    return `<div class="option"><div class="row"><img src="${x.img}" alt="" loading="lazy"><div><strong>${escape(x.name)}</strong><div class="muted">${escape(x.kind)} · ${money(x.price)} · ${escape(x.area)}${x.age?' · '+x.age+'+':''}</div><div class="muted">${affordable?'Fits remaining budget':'Exceeds remaining budget by '+money(x.price-remaining)}</div></div></div><button class="small" data-choose-extra="${x.id}" ${affordable?'':'disabled'}>Add</button></div>`;
+  }).join(''):`<div class="note">No additional venues match these filters in ${escape(s.area)} at this time. Try another category or change the neighborhood/time in Plan details.</div>`;
+}
+$('addStopCategory').addEventListener('change',renderAddStopChoices);
+$('addStopClose').onclick=closeAddStop;
+$('addStopDismiss').onclick=closeAddStop;
+$('addStopChoices').addEventListener('click',e=>{
+  const btn=e.target.closest('[data-choose-extra]');
+  if(!btn)return;
+  const x=v(btn.dataset.chooseExtra);
+  if(!x||!eligible(x)||s.stops.includes(x.id)||totalCost()+x.price>minBudget())return;
+  change(()=>{s.stops.push(x.id);s.votes={};s.round++;s.voteSlot=s.stops.length-1},false);
+  closeAddStop();
+  notify(`➕ ${x.name} added as stop ${s.stops.length}. New estimated cost: ${money(totalCost())} per person; remaining budget: ${money(minBudget()-totalCost())}.`);
+});
+
+
+// Smart Scheduling: suggested and user-entered exact slots, matched across attendees.
+const slotLabels=[['morning','10:00','Morning · 10 AM'],['afternoon','14:00','Afternoon · 2 PM'],['evening','19:00','Evening · 7 PM']];
+function slotList(){
+  const today=new Date();today.setHours(12,0,0,0);
+  const suggested=Array.from({length:7},(_,i)=>{const d=new Date(today);d.setDate(today.getDate()+i);const day=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;return slotLabels.map(([part,time,label])=>({id:day+'|'+time,date:day,time,label:`${d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} · ${label}`}))}).flat();
+  const extra=(s.customScheduleSlots||[]).map(id=>{
+    const [date,time]=id.split('|');
+    const dateObj=new Date(date+'T12:00:00');
+    const labelDate=Number.isNaN(dateObj.getTime())?date:dateObj.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+    const [hour,minute]=time.split(':').map(Number);
+    const timeLabel=((hour+11)%12+1)+':'+String(minute).padStart(2,'0')+' '+(hour>=12?'PM':'AM');
+    return {id,date,time,label:labelDate+' · '+timeLabel+' (custom)'};
+  });
+  return [...new Map([...suggested,...extra].map(x=>[x.id,x])).values()].sort((a,b)=>a.id.localeCompare(b.id));
+}
+function commonSlots(){return slotList().filter(slot=>people().length>0&&people().every(p=>Array.isArray(s.availability?.[p.id])&&s.availability[p.id].includes(slot.id)))}
+// Near matches are suggestions, not confirmations: each friend has chosen a time
+// within 90 minutes of the proposed start on the SAME calendar date.
+function nearbySlots(){
+  const all=slotList(),attendees=people(),exact=new Set(commonSlots().map(x=>x.id));
+  if(!attendees.length||attendees.some(p=>!Array.isArray(s.availability?.[p.id])||!s.availability[p.id].length))return [];
+  const mins=t=>{const [hr,mn]=t.split(':').map(Number);return hr*60+mn};
+  return all.filter(candidate=>!exact.has(candidate.id)&&attendees.every(p=>
+    (s.availability[p.id]||[]).some(id=>{const [date,time]=id.split('|');return date===candidate.date&&Math.abs(mins(time)-mins(candidate.time))<=90})
+  )).map(candidate=>({...candidate,offsets:attendees.map(p=>({name:p.name,selected:(s.availability[p.id]||[]).filter(id=>id.startsWith(candidate.date+'|')).map(id=>id.split('|')[1]).sort((a,b)=>Math.abs(mins(a)-mins(candidate.time))-Math.abs(mins(b)-mins(candidate.time)))[0]}))})).slice(0,5);
+}
+function renderSchedule(){
+  if(!s.availability)s.availability={};
+  if(!s.customScheduleSlots)s.customScheduleSlots=[];
+  const current=$('schedulePerson').value;
+  $('schedulePerson').innerHTML=people().map(p=>`<option value="${p.id}">${escape(p.name)}</option>`).join('');
+  if(people().some(p=>String(p.id)===current))$('schedulePerson').value=current;
+  const p=people().find(p=>String(p.id)===$('schedulePerson').value);
+  const selected=p?(s.availability[p.id]||[]):[];
+  $('scheduleChoices').innerHTML=p?`<div style="max-height:250px;overflow:auto;border:1px solid #e8e7f2;border-radius:11px;padding:8px;margin-top:9px">${slotList().map(slot=>`<label style="display:flex;gap:8px;align-items:center;padding:5px 2px;font-size:12px"><input type="checkbox" data-slot="${slot.id}" ${selected.includes(slot.id)?'checked':''}>${escape(slot.label)}</label>`).join('')}</div>`:'<p class="muted">Add an attending friend to start scheduling.</p>';
+  const replied=people().filter(p=>Array.isArray(s.availability[p.id])).length;
+  $('scheduleCount').textContent=`${replied}/${people().length} replied`;
+  const common=commonSlots();
+  const near=nearbySlots();
+  $('scheduleMatches').innerHTML=(common.length?`<strong class="green">✓ ${common.length} exact common time${common.length===1?'':'s'}</strong><p class="muted">Everyone selected these times:</p>${common.map(slot=>`<button class="${s.selectedSlot===slot.id?'':'soft'} small" style="margin:3px" data-pick-slot="${slot.id}">${escape(slot.label)} ${s.selectedSlot===slot.id?'✓':''}</button>`).join('')}`:'')+
+    (near.length?`<div class="note" style="margin-top:9px"><strong>🕒 Close matches (within 90 minutes)</strong><p>Friends selected similar—not identical—times. These are <b>suggested compromises</b>, not confirmed availability. Check with everyone before choosing.</p>${near.map(slot=>`<div style="margin:8px 0;padding:8px;border:1px solid #e9e4f8;border-radius:9px"><strong>${escape(slot.label)}</strong><div class="muted">${slot.offsets.map(p=>escape(p.name)+': '+escape(p.selected)).join(' · ')}</div><button class="soft small" data-propose-slot="${slot.id}" style="margin-top:6px">Use this proposed time</button></div>`).join('')}</div>`:'')+
+    (!common.length&&!near.length?(replied===people().length&&people().length?`<div class="alert warn">No exact or nearby common times found. Dates must match, and suggested compromises can differ by up to 90 minutes. Try adding another time or date.</div>`:`<div class="note">${replied} of ${people().length} availability responses saved. Matches appear as friends reply.</div>`):'');
+}
+$('schedulePerson').addEventListener('change',renderSchedule);
+$('addCustomSchedule').onclick=()=>{
+  const date=$('customScheduleDate').value,time=$('customScheduleTime').value;
+  const person=people().find(p=>String(p.id)===$('schedulePerson').value);
+  if(!person){$('customScheduleStatus').textContent='Please add or select an attending friend.';return}
+  if(!date||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)){$('customScheduleStatus').textContent='Please choose both a valid date and time.';return}
+  const candidate=new Date(date+'T'+time+':00');
+  if(Number.isNaN(candidate.getTime())||candidate.getTime()<Date.now()-60000){$('customScheduleStatus').textContent='Choose a date and time in the future.';return}
+  const id=date+'|'+time;
+  // Preserve checkbox changes not yet saved before adding a new custom slot.
+  const checked=[...$('scheduleChoices').querySelectorAll('[data-slot]:checked')].map(el=>el.dataset.slot);
+  change(()=>{
+    if(!s.customScheduleSlots)s.customScheduleSlots=[];
+    if(!s.customScheduleSlots.includes(id))s.customScheduleSlots.push(id);
+    if(!s.availability)s.availability={};
+    s.availability[person.id]=[...new Set([...checked,id])];
+  },false);
+  $('schedulePerson').value=String(person.id);
+  renderSchedule();
+  $('customScheduleStatus').textContent=`✓ Added ${date} at ${time} for ${person.name}. Other friends can now select this time too.`;
+};
+$('saveAvailability').onclick=()=>{
+  const p=people().find(p=>String(p.id)===$('schedulePerson').value);
+  if(!p)return;
+  const chosen=[...$('scheduleChoices').querySelectorAll('[data-slot]:checked')].map(x=>x.dataset.slot);
+  change(()=>{if(!s.availability)s.availability={};s.availability[p.id]=chosen},false);
+  $('customScheduleStatus').textContent=`✓ Saved ${chosen.length} available slots for ${p.name}.`;
+};
+$('clearAvailability').onclick=()=>{
+  const p=people().find(p=>String(p.id)===$('schedulePerson').value);
+  if(!p)return;
+  change(()=>{delete s.availability[p.id];s.selectedSlot=''},false);
+  $('customScheduleStatus').textContent=`Availability response cleared for ${p.name}.`;
+};
+
+// Inline confirmation works even in browsers that block JavaScript confirm() dialogs.
+let pendingProposedSlot=null;
+$('scheduleMatches').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const proposedId=b.getAttribute('data-propose-slot');
+  const exactId=b.getAttribute('data-pick-slot');
+  const confirmId=b.getAttribute('data-confirm-proposal');
+  const cancelProposal=b.hasAttribute('data-cancel-proposal');
+  if(cancelProposal){pendingProposedSlot=null;renderSchedule();return}
+  if(proposedId){
+    const slot=nearbySlots().find(x=>x.id===proposedId);
+    if(!slot){$('customScheduleStatus').textContent='This suggested time has changed. Please review availability again.';renderSchedule();return}
+    pendingProposedSlot=slot.id;
+    // Display an actual in-page confirmation rather than a blocked native dialog.
+    const prior=$('scheduleProposalConfirmation');if(prior)prior.remove();
+    const box=document.createElement('div');box.id='scheduleProposalConfirmation';box.className='note';
+    box.style.cssText='margin:12px 0;padding:14px;border:2px solid #9578fa;border-radius:12px;background:#f8f5ff';
+    box.innerHTML=`<strong>Confirm proposed time: ${escape(slot.label)}</strong><p>This is a compromise. Not every friend selected this exact time. Check with everyone before applying it to the itinerary.</p><div class="row"><button type="button" class="small" data-confirm-proposal="${escape(slot.id)}">✓ Everyone agrees — use this time</button><button type="button" class="soft small" data-cancel-proposal>Cancel</button></div>`;
+    b.closest('div[style*="border:1px"]')?.appendChild(box);
+    box.scrollIntoView({block:'nearest',behavior:'smooth'});
+    return;
+  }
+  const id=confirmId||exactId;
+  if(!id)return;
+  const chosen=slotList().find(slot=>slot.id===id);
+  if(!chosen){$('customScheduleStatus').textContent='That time is no longer available. Please refresh the suggestions.';return}
+  if(confirmId){
+    if(pendingProposedSlot!==id||!nearbySlots().some(slot=>slot.id===id)){pendingProposedSlot=null;renderSchedule();$('customScheduleStatus').textContent='Availability changed; please review the proposed time again.';return}
+  }else if(!commonSlots().some(slot=>slot.id===id)){
+    $('customScheduleStatus').textContent='Availability changed; this is no longer an exact match.';renderSchedule();return;
+  }
+  const kind=confirmId?'Group-approved compromise':'Exact common time';
+  pendingProposedSlot=null;
+  change(()=>{
+    s.selectedSlot=chosen.id;
+    s.date=chosen.date;
+    s.time=chosen.time;
+    s.period=Number(chosen.time.split(':')[0])>=17?'night':'day';
+    s.sequence++;s.stops=recommend();s.votes={};s.round++;
+  },false);
+  $('customScheduleStatus').textContent=`✓ ${kind}: ${chosen.label}. Your plan date and start time are now updated.`;
+  notify(`📅 ${kind} saved: ${chosen.label}.`);
+  $('customScheduleStatus').scrollIntoView({block:'nearest',behavior:'smooth'});
+});
+
+
+render();
+const tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
+$('customScheduleDate').value=`${tomorrow.getFullYear()}-${String(tomorrow.getMonth()+1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}`;
+</script>
+</body></html>
